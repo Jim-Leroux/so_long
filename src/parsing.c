@@ -6,7 +6,7 @@
 /*   By: jileroux <jileroux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:53:47 by jileroux          #+#    #+#             */
-/*   Updated: 2023/01/13 17:33:13 by jileroux         ###   ########.fr       */
+/*   Updated: 2023/01/14 17:21:44 by jileroux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,45 +38,54 @@ int	parsing_extension(char *filename)
 	return (0);
 }
 
-int	parsing_map(char *filename, char **argv)
+int	parsing_stack(char *filename, char **argv, t_data **data)
 {
 	int		fd;
 	int		index;
 	char	*line;
+	t_data	*tmp;
 
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
 		return (write(2, "Error: can't open file\n", 23), 0);
 	index = 0;
-	line = get_next_line(fd);
+	(*data) = lst_new(get_next_line(fd));
 	while (1)
 	{
+		tmp = lst_new(get_next_line(fd));
 		line = get_next_line(fd);
+		ft_lstadd_back(data, tmp);
+		tmp = tmp->next;
 		if (line == NULL)
 			break ;
 	}
 	return (1);
 }
 
-int	parsing_line_map(char *line, int index)
+int	parsing_map(t_data *data)
+{
+	if (parsing_first_and_last_line_map(data) == 0)
+		return (0);
+	data = data->next;
+	while (data->next->next)
+	{
+		if (parsing_character(data) == 0 || parsing_border(data) == 0)
+			return (0);
+		data = data->next;
+	}
+	if (parsing_first_and_last_line_map(data) == 0)
+		return (0);
+}
+
+int	parsing_first_and_last_line(t_data *data)
 {
 	int		i;
 
 	i = 0;
-	while (line)
+	while (data->line[i])
 	{
-		if (index == 0)
-		{
-			if (line[i++] != 0)
-				return (write(2, "Error : Border is not a wall\n", 29), 0);
-		}
-		if (index > 0 && index < ft_strlen(line))
-		{
-			if (line[i] != '1' && line[i] != '0' && line[i] != 'C'
-				&& line[i] != 'E' && line[i] != 'P')
-				return (write(2, "Wrong caracter in map\n", 22), 0);
-			i++;
-		}
+		if (data->line[i++] != '1')
+			return (write(2, "Error: border is not a wall\n", 28), 0);
 	}
 	return (1);
 }
