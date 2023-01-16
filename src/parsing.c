@@ -6,7 +6,7 @@
 /*   By: jileroux <jileroux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:53:47 by jileroux          #+#    #+#             */
-/*   Updated: 2023/01/14 17:21:44 by jileroux         ###   ########.fr       */
+/*   Updated: 2023/01/16 13:36:56 by jileroux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	parsing(int argc, char **argv, t_data *data, void *mlx)
 		return (write(2, "Error: Structure malloc\n", 24), 0);
 	if (parsing_extension(argv[1]) == 0)
 		return (write(2, "Error: Wrong file extension\n", 28), 0);
+	if (parsing_map(data) == 0 == 0)
+		return (0);
 	if (mlx == NULL)
 		return (write(2, "Error: mlx not initialised\n", 27), 0);
 	return (1);
@@ -29,6 +31,7 @@ int	parsing_extension(char *filename)
 {
 	int	i;
 
+	i = 0;
 	while (filename[i])
 		i++;
 	i = i - 4;
@@ -38,7 +41,7 @@ int	parsing_extension(char *filename)
 	return (0);
 }
 
-int	parsing_stack(char *filename, char **argv, t_data **data)
+int	parsing_stack(char **argv, t_data **data)
 {
 	int		fd;
 	int		index;
@@ -50,41 +53,45 @@ int	parsing_stack(char *filename, char **argv, t_data **data)
 		return (write(2, "Error: can't open file\n", 23), 0);
 	index = 0;
 	(*data) = lst_new(get_next_line(fd));
+	if ((*data)->line == NULL)
+		return (write(2, "Error: No map to read\n", 22), 0);
 	while (1)
 	{
 		tmp = lst_new(get_next_line(fd));
-		line = get_next_line(fd);
-		ft_lstadd_back(data, tmp);
-		tmp = tmp->next;
+		line = (tmp->line);
 		if (line == NULL)
 			break ;
+		ft_lstadd_back(data, tmp);
+		tmp = tmp->next;
 	}
 	return (1);
 }
 
 int	parsing_map(t_data *data)
 {
-	if (parsing_first_and_last_line_map(data) == 0)
+	if (parsing_first_and_last_line(data) == 0)
 		return (0);
 	data = data->next;
 	while (data->next->next)
 	{
-		if (parsing_character(data) == 0 || parsing_border(data) == 0)
+		if (parsing_character(data) == 0 || parsing_border(data) == 0
+			|| parsing_size_and_format(data) == 0)
 			return (0);
 		data = data->next;
 	}
-	if (parsing_first_and_last_line_map(data) == 0)
+	if (parsing_first_and_last_line(data) == 0)
 		return (0);
+	return (1);
 }
 
 int	parsing_first_and_last_line(t_data *data)
 {
 	int		i;
 
-	i = 0;
-	while (data->line[i])
+	i = -1;
+	while (data->line[++i] != '\n' || data->line[i] != '\0')
 	{
-		if (data->line[i++] != '1')
+		if (data->line[i] != '1')
 			return (write(2, "Error: border is not a wall\n", 28), 0);
 	}
 	return (1);

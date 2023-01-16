@@ -6,7 +6,7 @@
 /*   By: jileroux <jileroux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:49:17 by jileroux          #+#    #+#             */
-/*   Updated: 2023/01/14 15:11:21 by jileroux         ###   ########.fr       */
+/*   Updated: 2023/01/15 17:32:18 by jileroux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ int	main(int argc, char **argv)
 
 	mlx = mlx_init();
 	data = malloc(sizeof(t_data));
-	if (parsing(argc, argc, data, mlx) == 0)
+	if (parsing_stack(argv, &data) == 0)
+		return (0);
+	print_list(data);
+	if (parsing(argc, argv, data, mlx) == 0)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

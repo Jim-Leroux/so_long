@@ -6,7 +6,7 @@
 /*   By: jileroux <jileroux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 14:38:59 by jileroux          #+#    #+#             */
-/*   Updated: 2023/01/14 15:03:33 by jileroux         ###   ########.fr       */
+/*   Updated: 2023/01/15 17:35:22 by jileroux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_data	*ft_lstadd_back(t_data **data, t_data *new)
 		*data = new;
 	else
 	{
-		last = ft_datalast(*data);
+		last = ft_lstlast(*data);
 		last->next = new;
 	}
 	return (*data);
@@ -63,6 +63,7 @@ void	print_list(t_data *data)
 {
 	while (data)
 	{
+		printf("%s", data->line);
 		data = data->next;
 	}
 }

@@ -6,16 +6,18 @@
 #    By: jileroux <jileroux@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/13 14:42:17 by jileroux          #+#    #+#              #
-#    Updated: 2023/01/14 16:12:07 by jileroux         ###   ########.fr        #
+#    Updated: 2023/01/15 15:58:49 by jileroux         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #####################################################################
 ## ARGUMENTS
 
-NAME = so_long
-CFLAGS = -Wall -Werror -Wextra
-CC = clang
+NAME	=	so_long
+CFLAGS	=	-Wall -Werror -Wextra
+CC		=	clang
+MLX		=	./mlx
+MLX_LIB = 	./mlx/libmlx_Linux.a
 
 #####################################################################
 ## SOURCES
@@ -32,11 +34,15 @@ SRC_FILES = src/main.c\
 
 all: ${NAME}
 
-${NAME}: ${SRC_FILES}
-		${CC} ${CFLAGS} ${SRC_FILES} -g -o ${NAME}
+${NAME}: ${SRC_FILES} $(MLX_LIB)
+		${CC} ${CFLAGS} ${SRC_FILES} -o ${NAME} ${MLX_LIB}\
+		-L -lmlx_linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
+
+$(MLX_LIB):
+		make -C ${MLX} -j
 
 %.o: %.c
-		${CC} ${CFLAGS} $< -o $@
+		${CC} ${CFLAGS} -I${MLX} $< -o $@
 
 clean:
 		rm -rf *.o
