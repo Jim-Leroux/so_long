@@ -6,7 +6,7 @@
 /*   By: jileroux <jileroux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:53:47 by jileroux          #+#    #+#             */
-/*   Updated: 2023/01/16 13:36:56 by jileroux         ###   ########.fr       */
+/*   Updated: 2023/01/16 16:56:27 by jileroux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ int	parsing(int argc, char **argv, t_data *data, void *mlx)
 {
 	if (argc != 2)
 		return (write(2, "Error: Wrong arguments\n", 23), 0);
-	if (data == NULL)
-		return (write(2, "Error: Structure malloc\n", 24), 0);
 	if (parsing_extension(argv[1]) == 0)
 		return (write(2, "Error: Wrong file extension\n", 28), 0);
 	if (parsing_map(data) == 0 == 0)
@@ -48,6 +46,8 @@ int	parsing_stack(char **argv, t_data **data)
 	char	*line;
 	t_data	*tmp;
 
+	if (data == NULL)
+		return (write(2, "Error: Structure malloc\n", 24), 0);
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
 		return (write(2, "Error: can't open file\n", 23), 0);
@@ -72,10 +72,11 @@ int	parsing_map(t_data *data)
 	if (parsing_first_and_last_line(data) == 0)
 		return (0);
 	data = data->next;
-	while (data->next->next)
+	while (data->next)
 	{
 		if (parsing_character(data) == 0 || parsing_border(data) == 0
-			|| parsing_size_and_format(data) == 0)
+			|| parsing_size_and_format(data) == 0
+			|| parsing_minimal_map(data) == 0)
 			return (0);
 		data = data->next;
 	}
@@ -88,11 +89,15 @@ int	parsing_first_and_last_line(t_data *data)
 {
 	int		i;
 
-	i = -1;
-	while (data->line[++i] != '\n' || data->line[i] != '\0')
+	i = 0;
+	while (data->line[i] != '\n' && data->line[i] != '\0')
 	{
 		if (data->line[i] != '1')
+		{
+			printf("Ici : %d\n", i);
 			return (write(2, "Error: border is not a wall\n", 28), 0);
+		}
+		i++;
 	}
 	return (1);
 }

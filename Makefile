@@ -6,7 +6,7 @@
 #    By: jileroux <jileroux@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/13 14:42:17 by jileroux          #+#    #+#              #
-#    Updated: 2023/01/15 15:58:49 by jileroux         ###   ########.fr        #
+#    Updated: 2023/01/16 14:17:26 by jileroux         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 ## ARGUMENTS
 
 NAME	=	so_long
-CFLAGS	=	-Wall -Werror -Wextra
+CFLAGS	=	-Wall -Werror -Wextra -g3
 CC		=	clang
 MLX		=	./mlx
 MLX_LIB = 	./mlx/libmlx_Linux.a
