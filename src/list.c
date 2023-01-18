@@ -6,7 +6,7 @@
 /*   By: jileroux <jileroux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 14:38:59 by jileroux          #+#    #+#             */
-/*   Updated: 2023/01/16 16:49:49 by jileroux         ###   ########.fr       */
+/*   Updated: 2023/01/18 12:58:39 by jileroux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,6 @@ t_data	*lst_new(void *content)
 	if (data == NULL)
 		return (NULL);
 	data->line = content;
-	data->collectible = 0;
-	data->position = 0;
-	data->exit = 0;
-	data->horizontal = 0;
-	data->vertical = 0;
 	data->next = NULL;
 	return (data);
 }

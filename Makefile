@@ -6,7 +6,7 @@
 #    By: jileroux <jileroux@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/13 14:42:17 by jileroux          #+#    #+#              #
-#    Updated: 2023/01/16 14:17:26 by jileroux         ###   ########.fr        #
+#    Updated: 2023/01/18 14:32:01 by jileroux         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRC_FILES = src/main.c\
 			src/parsing.c\
 			src/parsing_2.c\
 			src/get_next_line.c\
+			src/so_long_utils.c\
 			src/get_next_line_utils.c
 
 #####################################################################
