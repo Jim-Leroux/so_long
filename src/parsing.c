@@ -6,7 +6,7 @@
 /*   By: jileroux <jileroux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:53:47 by jileroux          #+#    #+#             */
-/*   Updated: 2023/01/18 17:59:31 by jileroux         ###   ########.fr       */
+/*   Updated: 2023/01/21 16:56:27 by jileroux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	parsing(int argc, char **argv, t_map *map, t_data **data)
 		return (2);
 	if (parsing_map(*data, map) == 0)
 		return (0);
+	map->data = *data;
 	map->mlx = mlx_init();
 	if (map->mlx == NULL)
 		return (write(2, "Error: mlx not initialised\n", 27), 0);
@@ -49,24 +50,27 @@ int	parsing_stack(char **argv, t_data **data)
 	char	*line;
 	t_data	*tmp;
 
-	if (data == NULL)
-		return (write(2, "Error: Structure malloc\n", 24), 0);
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
 		return (write(2, "Error: can't open file\n", 23), 0);
 	index = 0;
-	(*data) = lst_new(get_next_line(fd));
+	(*data) = lst_new(get_next_line(fd, 0));
 	if ((*data)->line == NULL)
-		return (write(2, "Error: No map to read\n", 22), 0);
+		return (close(fd), write(2, "Error: No map to read\n", 22), 0);
 	while (1)
 	{
-		tmp = lst_new(get_next_line(fd));
+		tmp = lst_new(get_next_line(fd, 0));
 		line = (tmp->line);
 		if (line == NULL)
+		{
+			free(tmp);
 			break ;
+		}
 		ft_lstadd_back(data, tmp);
 		tmp = tmp->next;
 	}
+	get_next_line(fd, 1);
+	close(fd);
 	return (1);
 }
 
@@ -95,7 +99,6 @@ int	parsing_first_and_last_line(t_data *data)
 	{
 		if (data->line[i] != '1')
 		{
-			printf("Ici : %d\n", i);
 			return (write(2, "Error: border is not a wall\n", 28), 0);
 		}
 		i++;

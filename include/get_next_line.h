@@ -6,7 +6,7 @@
 /*   By: jileroux <jileroux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 15:48:17 by jileroux          #+#    #+#             */
-/*   Updated: 2022/10/11 15:52:43 by jileroux         ###   ########.fr       */
+/*   Updated: 2023/01/21 15:03:36 by jileroux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int		ft_strchr(char *s);
 int		ft_strlen(char *str);
 char	*ft_get_line(char *str);
 char	*ft_save_line(char *str);
-char	*get_next_line(int fd);
+char	*get_next_line(int fd, int reset);
 char	*ft_strjoin(char *str1, char *str2);
 char	*ft_strcpy(char *dest, const char *src);
 char	*ft_read_line(int fd, char *str_static);

@@ -6,7 +6,7 @@
 /*   By: jileroux <jileroux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:57:09 by jileroux          #+#    #+#             */
-/*   Updated: 2023/01/18 17:17:56 by jileroux         ###   ########.fr       */
+/*   Updated: 2023/01/21 18:42:53 by jileroux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,12 @@
 # define EXIT "sprites/exit.xpm"
 # define WALL "sprites/wall.xpm"
 
+# define K_ESC 65307
+# define K_A			97
+# define K_W			119
+# define K_S			115
+# define K_D			100
+
 typedef struct s_data
 {
 	char			*line;
@@ -49,16 +55,30 @@ typedef struct s_map
 {
 	int				collectible;
 	int				position;
+	int				px;
+	int				py;
 	int				exit;
 	int				horizontal;
 	int				vertical;
+	int				move_count;
+	int				i;
+	int				j;
+	int				**visited;
+	char			**map_array;
 	t_image			*image;
+	t_data			*data;
 	void			*mlx;
+	void			*mlx_win;
 }	t_map;
 
 int		init_struct(t_map *map);
-int		put_image(t_data *data, t_map *map, void *mlx_win);
-int		map_render(t_data *data, t_map *map, void *mlx_win);
+int		close_window(t_map *map);
+int		is_valid_map(t_map *map);
+int		**init_tab_visited(t_map *map);
+int		check_hook(int keycode, t_map *map);
+int		list_to_tab(t_data *data, t_map *map);
+int		put_image(t_map *map, int i, int j);
+int		map_render(t_map *map);
 
 int		parsing_border(t_data *data);
 int		parsing_character(t_data *data);
@@ -70,6 +90,20 @@ int		parsing_stack(char **argv, t_data **data);
 int		parsing_minimal_map(t_data *data, t_map *map);
 int		parsing_size_and_format(t_data *data, t_map *map);
 int		parsing(int argc, char **argv, t_map *map, t_data **data);
+
+void	free_tab(t_map *map);
+void	close_img(t_map *map);
+void	find_player(t_map *map);
+void	free_all(t_map *map);
+void	free_data(t_data *data);
+void	ft_move_player(int keycode, t_map *map);
+void	move_top(t_map *map);
+void	move_left(t_map *map);
+void	move_down(t_map *map);
+void	move_right(t_map *map);
+
+char	*ft_itoa(int n);
+char	**init_tab(t_map *map);
 
 void	free_list(t_data *data);
 void	print_list(t_data *data);

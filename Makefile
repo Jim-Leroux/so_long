@@ -6,7 +6,7 @@
 #    By: jileroux <jileroux@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/13 14:42:17 by jileroux          #+#    #+#              #
-#    Updated: 2023/01/18 14:32:01 by jileroux         ###   ########.fr        #
+#    Updated: 2023/01/21 18:49:52 by jileroux         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,11 @@ MLX_LIB = 	./mlx/libmlx_Linux.a
 
 SRC_FILES = src/main.c\
 			src/list.c\
+			src/free.c\
+			src/path.c\
+			src/move.c\
+			src/close.c\
+			src/ft_itoa.c\
 			src/parsing.c\
 			src/parsing_2.c\
 			src/get_next_line.c\
