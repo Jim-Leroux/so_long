@@ -6,7 +6,7 @@
 /*   By: jileroux <jileroux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:49:17 by jileroux          #+#    #+#             */
-/*   Updated: 2023/01/21 18:57:05 by jileroux         ###   ########.fr       */
+/*   Updated: 2023/01/22 15:12:47 by jileroux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,12 @@ int	main(int argc, char **argv)
 	map = malloc(sizeof(t_map));
 	if (parsing(argc, argv, map, &data) == 0
 		|| parsing_img(map->image, map->mlx) == 0)
-		return (EXIT_FAILURE);
+		return (free(map), EXIT_FAILURE);
 	if (list_to_tab(data, map) == 0)
 		return (EXIT_FAILURE);
 	if (is_valid_map(map) != (map->collectible + map->exit))
-		return (write(2, "Error : map is not valid\n", 25), EXIT_FAILURE);
+		return (free_invalid_map(map),
+			write(2, "Error : map is not valid\n", 25), EXIT_FAILURE);
 	map->mlx_win = mlx_new_window(map->mlx, map->horizontal * 64,
 			map->vertical * 64, "so_long");
 	map_render(map);
@@ -43,12 +44,11 @@ int	map_render(t_map *map)
 	int	j;
 
 	i = 0;
-	while (map->map_array[i])
+	while (i < map->vertical)
 	{
 		j = 0;
-		while (map->map_array[i][j])
+		while (j < map->horizontal)
 		{
-			
 			put_image(map, i, j);
 			j++;
 		}
@@ -68,18 +68,38 @@ int	check_hook(int keycode, t_map *map)
 
 void	ft_move_player(int keycode, t_map *map)
 {
+	int		moved;
 	char	*move_count;
 
+	moved = 0;
 	if (keycode == K_W)
-		move_top(map);
+		moved = move_top(map);
 	if (keycode == K_A)
-		move_left(map);
+		moved = move_left(map);
 	if (keycode == K_S)
-		move_down(map);
+		moved = move_down(map);
 	if (keycode == K_D)
-		move_right(map);
+		moved = move_right(map);
 	move_count = ft_itoa(map->move_count);
-	write(1, "Move : ", 7);
-	write(1, move_count, strlen(move_count));
-	write(1, "\n", 1);
+	if (moved)
+	{
+		write(1, "Move : ", 7);
+		write(1, move_count, strlen(move_count));
+		write(1, "\n", 1);
+	}
+	free(move_count);
+}
+
+int	parsing_line(t_data **data, int fd)
+{
+	if (fd == -1)
+		return (write(2, "Error: can't open file\n", 23), 0);
+	(*data) = lst_new(get_next_line(fd, 0));
+	if ((*data)->line == NULL)
+		return (free(*data), close(fd),
+			write(2, "Error: No map to read\n", 22), 0);
+	if ((*data)->line[0] == '\n')
+		return (free((*data)->line), free(*data), close(fd),
+			write(2, "Error: No map to read\n", 22), 0);
+	return (1);
 }

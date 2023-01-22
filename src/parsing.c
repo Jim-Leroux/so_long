@@ -6,7 +6,7 @@
 /*   By: jileroux <jileroux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:53:47 by jileroux          #+#    #+#             */
-/*   Updated: 2023/01/21 16:56:27 by jileroux         ###   ########.fr       */
+/*   Updated: 2023/01/22 14:56:48 by jileroux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	parsing(int argc, char **argv, t_map *map, t_data **data)
 	if (parsing_extension(argv[1]) == 0)
 		return (write(2, "Error: Wrong file extension\n", 28), 0);
 	if (parsing_stack(argv, data) == 0)
-		return (2);
+		return (0);
 	if (parsing_map(*data, map) == 0)
 		return (0);
 	map->data = *data;
@@ -46,17 +46,12 @@ int	parsing_extension(char *filename)
 int	parsing_stack(char **argv, t_data **data)
 {
 	int		fd;
-	int		index;
 	char	*line;
 	t_data	*tmp;
 
 	fd = open(argv[1], O_RDONLY);
-	if (fd == -1)
-		return (write(2, "Error: can't open file\n", 23), 0);
-	index = 0;
-	(*data) = lst_new(get_next_line(fd, 0));
-	if ((*data)->line == NULL)
-		return (close(fd), write(2, "Error: No map to read\n", 22), 0);
+	if (parsing_line(data, fd) == 0)
+		return (0);
 	while (1)
 	{
 		tmp = lst_new(get_next_line(fd, 0));
@@ -82,7 +77,7 @@ int	parsing_map(t_data *data, t_map *map)
 	if (parsing_character(data) == 0 || parsing_border(data) == 0
 		|| parsing_size_and_format(data, map) == 0
 		|| parsing_minimal_map(data, map) == 0)
-		return (0);
+		return (free_data(data), free(map->image), 0);
 	while (data->next)
 		data = data->next;
 	if (parsing_first_and_last_line(data) == 0)

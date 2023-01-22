@@ -6,7 +6,7 @@
 /*   By: jileroux <jileroux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:56:31 by jileroux          #+#    #+#             */
-/*   Updated: 2023/01/21 17:13:36 by jileroux         ###   ########.fr       */
+/*   Updated: 2023/01/22 15:14:03 by jileroux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,17 @@ void	free_all(t_map *map)
 	free(map->image);
 	free(map->mlx);
 	free_tab(map);
+	free(map);
+}
+
+void	free_invalid_map(t_map *map)
+{
+	free_char_tab(map);
+	free_tab(map);
+	close_img(map);
+	mlx_destroy_display(map->mlx);
+	free(map->mlx);
+	free_data(map->data);
+	free(map->image);
 	free(map);
 }

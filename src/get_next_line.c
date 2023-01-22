@@ -6,7 +6,7 @@
 /*   By: jileroux <jileroux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 15:48:25 by jileroux          #+#    #+#             */
-/*   Updated: 2023/01/21 15:03:59 by jileroux         ###   ########.fr       */
+/*   Updated: 2023/01/22 14:22:54 by jileroux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ char	*get_next_line(int fd, int reset)
 	if (str_temporary == NULL)
 		return (NULL);
 	str_static = ft_save_line(str_static);
+	if (str_temporary[0] == '\n')
+		free(str_static);
 	return (str_temporary);
 }
 

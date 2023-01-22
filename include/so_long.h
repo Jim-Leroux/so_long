@@ -6,7 +6,7 @@
 /*   By: jileroux <jileroux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:57:09 by jileroux          #+#    #+#             */
-/*   Updated: 2023/01/21 18:42:53 by jileroux         ###   ########.fr       */
+/*   Updated: 2023/01/22 15:14:10 by jileroux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int		map_render(t_map *map);
 int		parsing_border(t_data *data);
 int		parsing_character(t_data *data);
 int		parsing_extension(char *filename);
+int		parsing_line(t_data **data, int fd);
 int		parsing_img(t_image *image, void *mlx);
 int		parsing_map(t_data *data, t_map *map);
 int		parsing_first_and_last_line(t_data *data);
@@ -91,16 +92,19 @@ int		parsing_minimal_map(t_data *data, t_map *map);
 int		parsing_size_and_format(t_data *data, t_map *map);
 int		parsing(int argc, char **argv, t_map *map, t_data **data);
 
+int		move_top(t_map *map);
+int		move_left(t_map *map);
+int		move_down(t_map *map);
+int		move_right(t_map *map);
+
 void	free_tab(t_map *map);
 void	close_img(t_map *map);
 void	find_player(t_map *map);
 void	free_all(t_map *map);
 void	free_data(t_data *data);
+void	free_char_tab(t_map *map);
+void	free_invalid_map(t_map *map);
 void	ft_move_player(int keycode, t_map *map);
-void	move_top(t_map *map);
-void	move_left(t_map *map);
-void	move_down(t_map *map);
-void	move_right(t_map *map);
 
 char	*ft_itoa(int n);
 char	**init_tab(t_map *map);
